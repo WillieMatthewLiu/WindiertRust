@@ -1,0 +1,7 @@
+[package]
+name = "wd-driver-shared"
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dependencies]

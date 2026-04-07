@@ -1,0 +1,22 @@
+[workspace]
+members = [
+    "crates/wd-proto",
+    "crates/wd-driver-shared",
+    "crates/wd-filter",
+    "crates/wd-user",
+    "crates/wd-cli",
+    "driver/wd-kmdf",
+]
+resolver = "2"
+
+[workspace.package]
+edition = "2024"
+license = "LGPL-3.0-or-later"
+version = "0.1.0"
+
+[workspace.dependencies]
+bitflags = "2.6"
+bincode = "1.3"
+clap = { version = "4.5", features = ["derive"] }
+thiserror = "2.0"
+zerocopy = { version = "0.8", features = ["derive"] }
