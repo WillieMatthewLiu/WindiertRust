@@ -1,0 +1,22 @@
+; wd-rust-x86.inf
+; Placeholder INF for Task 6 host packaging flow documentation.
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=NetService
+ClassGuid={4D36E974-E325-11CE-BFC1-08002BE10318}
+Provider=%ProviderName%
+DriverVer=04/08/2026,0.1.0.0
+
+[Manufacturer]
+%ProviderName%=Standard,NTx86
+
+[Standard.NTx86]
+%ServiceName%=InstallSection
+
+[InstallSection]
+CopyFiles=@wd-rust.sys
+
+[Strings]
+ProviderName="WinDivert Rust Lab"
+ServiceName="wd-rust-x86"

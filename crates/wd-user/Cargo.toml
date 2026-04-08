@@ -5,3 +5,5 @@ license.workspace = true
 version.workspace = true
 
 [dependencies]
+wd-filter = { path = "../wd-filter" }
+wd-proto = { path = "../wd-proto" }
