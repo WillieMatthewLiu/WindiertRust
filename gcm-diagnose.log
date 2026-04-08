@@ -1,0 +1,332 @@
+﻿Diagnose log at 2026-04-08T03:41:15Z
+
+AppPath: C:\Program Files\Git\mingw64\bin\git-credential-manager.exe
+InstallDir: C:\Program Files\Git\mingw64\bin\
+Version: 2.6.1+786ab03440ddc82e807a97c0e540f5247e44cec6
+
+------------
+Diagnostic: Environment
+Skipped: False
+Success: True
+Exception: None
+Log:
+OSType: Windows
+OSVersion: 10.0 (build 26200)
+Reading environment variables... OK
+ Variables:
+LESS=
+PUBLIC=C:\Users\Public
+OPENCV_LINK_LIBS=opencv_world4120
+ALLUSERSPROFILE=C:\ProgramData
+G_EXPERIMENTAL=true
+JAVA_HOME_8=C:\Program Files\Java\jdk1.8.0_341
+LOGONSERVER=\\WINDOWS-2O10M5G
+LOCALAPPDATA=C:\Users\20042\AppData\Local
+ProgramData=C:\ProgramData
+ZES_ENABLE_SYSMAN=1
+CODEX_THREAD_ID=019d6691-a228-71f3-b51e-9e364c28bd46
+GATEWAY_VM_OPTIONS=D:\0DProgramFiles\jetbra\vmoptions\gateway.vmoptions
+MAVEN_HOME=C:\Program Files\Apache\maven-3.9.2
+APPCODE_VM_OPTIONS=D:\0DProgramFiles\jetbra\vmoptions\appcode.vmoptions
+TMPDIR=C:\Users\20042\AppData\Local\Temp
+WT_PROFILE_ID={0caa0dad-35be-5f56-a8ff-afceeeaa6101}
+ProgramW6432=C:\Program Files
+PAGER=more.com
+G_MIRROR=https://mirrors.aliyun.com/golang/
+SSLKEYLOGFILE=D:\0C-SoftInstallers\explore\random.txt
+GIT_EXEC_PATH=C:/Program Files/Git/mingw64/libexec/git-core
+DATASPELL_VM_OPTIONS=D:\0DProgramFiles\jetbra\vmoptions\dataspell.vmoptions
+JAVA_HOME_17=C:\Program Files\Java\jdk-17
+TRAECLI_PERSONAL_ACCESS_TOKEN=trae-lt-4a69668c3b0fd3219a902d33de3a14d7457be3fab6888a37015ad083
+RUSTUP_HOME=D:\1W-DevEnvs\04Rust\RustUP
+SystemDrive=C:
+MSYSTEM=MINGW64
+STUDIO_VM_OPTIONS=D:\0DProgramFiles\jetbra\vmoptions\studio.vmoptions
+DATAGRIP_VM_OPTIONS=D:\0DProgramFiles\jetbra\vmoptions\datagrip.vmoptions
+OS=Windows_NT
+PROCESSOR_ARCHITECTURE=x86
+CARGO_HOME=D:\1W-DevEnvs\04Rust\Cargo
+PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL
+OPENSSL_LIB_DIR=D:\0DProgramFiles\OpenSSL-Win64\lib\VC\x64\MT
+MinGW_HOME=D:\0DProgramFiles\mingw64
+CommonProgramW6432=C:\Program Files\Common Files
+ProgramFiles(x86)=C:\Program Files (x86)
+USERPROFILE=C:\Users\20042
+LIBCLANG_PATH=D:\0DProgramFiles\LLVM\bin
+USERNAME=nicholas
+GIT_CONFIG_COUNT=1
+G_HOME=C:\Program Files\G
+WEBIDE_VM_OPTIONS=D:\0DProgramFiles\jetbra\vmoptions\webide.vmoptions
+CommonProgramFiles=C:\Program Files (x86)\Common Files
+OPENCV_INCLUDE_PATHS=D:\0DProgramFiles\opencv\build\include
+JETBRAINSCLIENT_VM_OPTIONS=D:\0DProgramFiles\jetbra\vmoptions\jetbrainsclient.vmoptions
+CONDA_SHLVL=0
+GOLAND_VM_OPTIONS=D:\0DProgramFiles\jetbra\vmoptions\goland.vmoptions
+PROMPT=$P$G
+ProgramFiles=C:\Program Files (x86)
+NODE_PATH=D:\1W-DevEnvs\05Nodejs\node_global
+GIT_CONFIG_KEY_0=safe.directory
+PATH=C:/Program Files/Git/mingw64/libexec/git-core;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\20042\bin;C:\Users\20042\.codex\tmp\arg0\codex-arg0YBP1xO;D:\1W-DevEnvs\05Nodejs\node_global\node_modules\@openai\codex\node_modules\@openai\codex-win32-x64\vendor\x86_64-pc-windows-msvc\path;D:\0DProgramFiles\miniconda3\condabin;C:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\Program Files\Java\jdk1.8.0_341\bin;C:\Program Files\Apache\maven-3.9.2\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\0DProgramFiles\miniconda3;D:\0DProgramFiles\miniconda3\Scripts;D:\0DProgramFiles\miniconda3\Library\bin;D:\0DProgramFiles\mingw64\bin;C:\Program Files\G\bin;C:\Program Files\G\Go\bin;D:\1W-DevEnvs\02GoG\bin;D:\0C-SoftInstallers\cmder;C:\Program Files\Graphviz\bin;C:\Program Files\nodejs\;D:\0DProgramFiles\mingw64\bin;C:\Program Files (x86)\VRV\CEMS;C:\Program Files\Git\cmd;D:\0DProgramFiles\OpenSSL-Win64\bin;D:\0DProgramFiles\Strawberry\c\bin;D:\0DProgramFiles\Strawberry\perl\site\bin;D:\0DProgramFiles\Strawberry\perl\bin;d:\0dprogramfiles\CEMS;C:\Program Files\Wireshark;D:\1W-DevEnvs\05Nodejs\node_global;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;D:\0DProgramFiles\opencv\build\x64\vc16\bin;D:\0DProgramFiles\LLVM\bin;D:\0DProgramFiles\LLVM\lib;C:\Program Files\WiX Toolset v6.0\bin\;D:\0DProgramFiles\wix314;C:\WINDOWS\system32\Npcap;D:\0DProgramFiles\OpenCode;D:\0DProgramFiles\Pandoc\;C:\Users\20042\AppData\Local\trae-cli\bin;d:\0DProgramFiles\Trae CN\bin;D:\1W-DevEnvs\04Rust\Cargo\bin;C:\Users\20042\.cargo\bin;C:\Users\20042\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Microsoft VS Code\bin;C:\Users\20042\AppData\Roaming\npm;C:\Program Files\Wireshark;D:\1W-DevEnvs\05Nodejs\node_global;D:\0DProgramFiles\Zed\bin
+JETBRAINS_CLIENT_VM_OPTIONS=D:\0DProgramFiles\jetbra\vmoptions\jetbrains_client.vmoptions
+WT_SESSION=0f47efaf-b75b-4956-a56c-b7ae1d5e5c4a
+OneDrive=C:\Users\20042\OneDrive
+WINDOWS_PFX_PASSWORD=123
+PSModulePath=C:\Users\20042\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules
+PROCESSOR_REVISION=8c01
+USERDOMAIN=WINDOWS-2O10M5G
+IDEA_VM_OPTIONS=D:\0DProgramFiles\jetbra\vmoptions\idea.vmoptions
+DEVECOSTUDIO_VM_OPTIONS=D:\0DProgramFiles\jetbra\vmoptions\devecostudio.vmoptions
+TERM=xterm-256color
+COMPUTERNAME=WINDOWS-2O10M5G
+RIDER_VM_OPTIONS=D:\0DProgramFiles\jetbra\vmoptions\rider.vmoptions
+SSO_CLIENT_DIRECTORY=c:\sso_client\
+GIT_CONFIG_VALUE_0=D:\1E-RustWorks\10-DevBench\05-WinDivert
+WIX6=C:\Program Files\WiX Toolset v6.0\bin\
+SystemRoot=C:\WINDOWS
+CLION_VM_OPTIONS=D:\0DProgramFiles\jetbra\vmoptions\clion.vmoptions
+ComSpec=C:\WINDOWS\system32\cmd.exe
+JAVA_HOME=C:\Program Files\Java\jdk1.8.0_341
+PROCESSOR_LEVEL=6
+HOMEDRIVE=C:
+OneDriveConsumer=C:\Users\20042\OneDrive
+CODEX_SANDBOX_NETWORK_DISABLED=1
+USERDOMAIN_ROAMINGPROFILE=WINDOWS-2O10M5G
+CODEX_MANAGED_BY_NPM=1
+WINDIVERT_PATH=C:\Windows\System32
+OPENCV_LINK_PATHS=D:\0DProgramFiles\opencv\build\x64\vc16\lib
+LC_CTYPE=C.UTF-8
+WEBSTORM_VM_OPTIONS=D:\0DProgramFiles\jetbra\vmoptions\webstorm.vmoptions
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 140 Stepping 1, GenuineIntel
+CommonProgramFiles(x86)=C:\Program Files (x86)\Common Files
+windir=C:\WINDOWS
+SESSIONNAME=Console
+TMP=C:\Users\20042\AppData\Local\Temp
+APPDATA=C:\Users\20042\AppData\Roaming
+CONDA_BAT=D:\0DProgramFiles\miniconda3\condabin\conda.bat
+CONDA_EXE=D:\0DProgramFiles\miniconda3\Scripts\conda.exe
+PYCHARM_VM_OPTIONS=D:\0DProgramFiles\jetbra\vmoptions\pycharm.vmoptions
+NUMBER_OF_PROCESSORS=8
+WSLENV=WT_SESSION:WT_PROFILE_ID:
+RUBYMINE_VM_OPTIONS=D:\0DProgramFiles\jetbra\vmoptions\rubymine.vmoptions
+GOPATH=D:\1W-DevEnvs\02GoG
+DriverData=C:\Windows\System32\Drivers\DriverData
+GIT_PAGER=more.com
+PLINK_PROTOCOL=ssh
+GIT_TRACE2_PARENT_SID=247daf65-628a-4c18-8c67-a45283294178
+OPENSSL_DIR=D:\0DProgramFiles\OpenSSL-Win64
+RUST_LOG=debug
+GOROOT=C:\Program Files\G\Go
+HOMEPATH=\Users\20042
+GOPROXY=https://goproxy.cn,direct
+COLORTERM=truecolor
+JAVA_HOME_13=C:\Program Files\Java\jdk-13.0.2
+HOME=C:\Users\20042
+PROCESSOR_ARCHITEW6432=AMD64
+PHPSTORM_VM_OPTIONS=D:\0DProgramFiles\jetbra\vmoptions\phpstorm.vmoptions
+TEMP=C:\Users\20042\AppData\Local\Temp
+MOZ_PLUGIN_PATH=C:\PROGRAM FILES (X86)\FOXIT SOFTWARE\FOXIT PDF EDITOR\plugins\
+
+
+------------
+Diagnostic: File system
+Skipped: False
+Success: True
+Exception: None
+Log:
+Temporary directory is 'C:\Users\20042\AppData\Local\Temp\'...
+Checking basic file I/O...
+Writing to temporary file 'C:\Users\20042\AppData\Local\Temp\6b2e48fe9a91bee582a5bd24'... OK
+Reading from temporary file 'C:\Users\20042\AppData\Local\Temp\6b2e48fe9a91bee582a5bd24'... OK
+Deleting temporary file 'C:\Users\20042\AppData\Local\Temp\6b2e48fe9a91bee582a5bd24'... OK
+Testing IFileSystem instance...
+UserHomePath: C:\Users\CodexSandboxOffline
+UserDataDirectoryPath: C:\Users\CodexSandboxOffline\.gcm
+GetCurrentDirectory(): D:\1E-RustWorks\10-DevBench\05-WinDivert
+
+------------
+Diagnostic: Networking
+Skipped: False
+Success: False
+Exception:
+System.Net.Http.HttpRequestException: 发送请求时出错。 ---> System.Net.WebException: 基础连接已经关闭: 接收时发生错误。 ---> System.ComponentModel.Win32Exception: 安全包中没有可用的凭证
+   在 System.Net.SSPIWrapper.AcquireCredentialsHandle(SSPIInterface SecModule, String package, CredentialUse intent, SecureCredential2 scc)
+   在 System.Net.Security.SecureChannel.AcquireCredentialsHandle(CredentialUse credUsage, SecureCredential2& secureCredential)
+   在 System.Net.Security.SecureChannel.AcquireCredentialsHandle(CredentialUse credUsage, X509Certificate2 selectedCert, Flags flags)
+   在 System.Net.Security.SecureChannel.AcquireClientCredentials(Byte[]& thumbPrint)
+   在 System.Net.Security.SecureChannel.GenerateToken(Byte[] input, Int32 offset, Int32 count, Byte[]& output)
+   在 System.Net.Security.SecureChannel.NextMessage(Byte[] incoming, Int32 offset, Int32 count)
+   在 System.Net.Security.SslState.StartSendBlob(Byte[] incoming, Int32 count, AsyncProtocolRequest asyncRequest, Boolean renegotiation)
+   在 System.Net.Security.SslState.ForceAuthentication(Boolean receiveFirst, Byte[] buffer, AsyncProtocolRequest asyncRequest, Boolean renegotiation)
+   在 System.Net.Security.SslState.ProcessAuthentication(LazyAsyncResult lazyResult)
+   在 System.Net.TlsStream.CallProcessAuthentication(Object state)
+   在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   在 System.Net.TlsStream.ProcessAuthentication(LazyAsyncResult result)
+   在 System.Net.TlsStream.BeginWrite(Byte[] buffer, Int32 offset, Int32 size, AsyncCallback asyncCallback, Object asyncState)
+   在 System.Net.TlsStream.UnsafeBeginWrite(Byte[] buffer, Int32 offset, Int32 size, AsyncCallback asyncCallback, Object asyncState)
+   在 System.Net.PooledStream.UnsafeBeginWrite(Byte[] buffer, Int32 offset, Int32 size, AsyncCallback callback, Object state)
+   在 System.Net.ConnectStream.WriteHeaders(Boolean async)
+   --- 内部异常堆栈跟踪的结尾 ---
+   在 System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   在 System.Net.Http.HttpClientHandler.GetResponseCallback(IAsyncResult ar)
+   --- 内部异常堆栈跟踪的结尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 GitCredentialManager.Diagnostics.NetworkingDiagnostic.<RunInternalAsync>d__4.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 GitCredentialManager.Diagnostics.Diagnostic.<RunAsync>d__6.MoveNext()
+Log:
+Checking networking and HTTP stack...
+Creating HTTP client... OK
+IsNetworkAvailable: True
+Sending HEAD request to http://example.com...Sending HEAD request to https://example.com...
+------------
+Diagnostic: Git
+Skipped: False
+Success: True
+Exception: None
+Log:
+Getting Git version... OK
+Git version is '2.49.0.windows.1'
+Locating current repository...Git repository at 'D:/1E-RustWorks/10-DevBench/05-WinDivert/.git'
+ OK
+Listing all Git configuration... OK
+Git configuration:
+file:C:/Program Files/Git/etc/gitconfig	diff.astextplain.textconv=astextplain
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.clean=git-lfs clean -- %f
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.smudge=git-lfs smudge -- %f
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.process=git-lfs filter-process
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.required=true
+file:C:/Program Files/Git/etc/gitconfig	http.sslbackend=openssl
+file:C:/Program Files/Git/etc/gitconfig	http.sslcainfo=C:/Program Files/Git/mingw64/etc/ssl/certs/ca-bundle.crt
+file:C:/Program Files/Git/etc/gitconfig	core.autocrlf=true
+file:C:/Program Files/Git/etc/gitconfig	core.fscache=true
+file:C:/Program Files/Git/etc/gitconfig	core.symlinks=false
+file:C:/Program Files/Git/etc/gitconfig	core.longpaths=true
+file:C:/Program Files/Git/etc/gitconfig	pull.rebase=false
+file:C:/Program Files/Git/etc/gitconfig	credential.helper=manager
+file:C:/Program Files/Git/etc/gitconfig	credential.https://dev.azure.com.usehttppath=true
+file:C:/Program Files/Git/etc/gitconfig	init.defaultbranch=master
+file:C:/Users/20042/.gitconfig	core.autocrlf=true
+file:C:/Users/20042/.gitconfig	core.compression=0
+file:C:/Users/20042/.gitconfig	difftool.sourcetree.cmd='' 
+file:C:/Users/20042/.gitconfig	mergetool.sourcetree.cmd='' 
+file:C:/Users/20042/.gitconfig	mergetool.sourcetree.trustexitcode=true
+file:C:/Users/20042/.gitconfig	user.name=刘炜
+file:C:/Users/20042/.gitconfig	user.email=rd-liuwei@pcitc.com
+file:C:/Users/20042/.gitconfig	http.sslverify=false
+file:C:/Users/20042/.gitconfig	http.postbuffer=1048576000
+file:C:/Users/20042/.gitconfig	http.version=HTTP/1.1
+file:C:/Users/20042/.gitconfig	http.proxy=http://127.0.0.1:7890
+file:C:/Users/20042/.gitconfig	credential.https://git.icloud.sinopec.com.provider=generic
+file:C:/Users/20042/.gitconfig	credential.https://git.pcitc.com.provider=generic
+file:C:/Users/20042/.gitconfig	credential.https://git.paas.sinopec.com.provider=generic
+file:C:/Users/20042/.gitconfig	credential.https://gitee.com.provider=generic
+file:C:/Users/20042/.gitconfig	credential.https://git.devcloud.pcitc.com.provider=generic
+file:C:/Users/20042/.gitconfig	safe.directory=*
+file:C:/Users/20042/.gitconfig	https.proxy=http://127.0.0.1:7890
+file:.git/config	core.repositoryformatversion=0
+file:.git/config	core.filemode=false
+file:.git/config	core.bare=false
+file:.git/config	core.logallrefupdates=true
+file:.git/config	core.symlinks=false
+file:.git/config	core.ignorecase=true
+file:.git/config	remote.origin.url=https://github.com/WillieMatthewLiu/WindiertRust.git
+file:.git/config	remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+file:.git/config	branch.main.remote=origin
+file:.git/config	branch.main.merge=refs/heads/main
+command line:	safe.directory=D:\1E-RustWorks\10-DevBench\05-WinDivert
+
+
+------------
+Diagnostic: Credential storage
+Skipped: False
+Success: True
+Exception: None
+Log:
+ICredentialStore instance is of type: CredentialStore
+Writing test credential... OK
+Reading test credential... OK
+Deleting test credential... OK
+
+------------
+Diagnostic: Microsoft authentication (AAD/MSA)
+Skipped: False
+Success: False
+Exception:
+System.UnauthorizedAccessException: 对路径“C:\Users\20042\AppData\Local\.IdentityService”的访问被拒绝。
+   在 System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   在 System.IO.Directory.InternalCreateDirectory(String fullPath, String path, Object dirSecurityObj, Boolean checkHost)
+   在 System.IO.Directory.InternalCreateDirectoryHelper(String path, Boolean checkHost)
+   在 System.IO.Directory.CreateDirectory(String path)
+   在 Microsoft.Identity.Client.Extensions.Msal.CrossPlatLock..ctor(String lockfilePath, Int32 lockFileRetryDelay, Int32 lockFileRetryCount)
+   在 Microsoft.Identity.Client.Extensions.Msal.MsalCacheHelper.CreateCrossPlatLock(StorageCreationProperties storageCreationProperties)
+   在 Microsoft.Identity.Client.Extensions.Msal.MsalCacheHelper.<CreateAsync>d__23.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 GitCredentialManager.Diagnostics.MicrosoftAuthenticationDiagnostic.<RunInternalAsync>d__1.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 GitCredentialManager.Diagnostics.Diagnostic.<RunAsync>d__6.MoveNext()
+Log:
+Broker is not enabled.
+Flow type is: Auto
+Gathering MSAL token cache data... OK
+CacheDirectory: C:\Users\20042\AppData\Local\.IdentityService
+CacheFileName: msal.cache
+CacheFilePath: C:\Users\20042\AppData\Local\.IdentityService\msal.cache
+Creating cache helper...
+------------
+Diagnostic: GitHub API
+Skipped: False
+Success: False
+Exception:
+System.Net.Http.HttpRequestException: 发送请求时出错。 ---> System.Net.WebException: 基础连接已经关闭: 接收时发生错误。 ---> System.ComponentModel.Win32Exception: 安全包中没有可用的凭证
+   在 System.Net.SSPIWrapper.AcquireCredentialsHandle(SSPIInterface SecModule, String package, CredentialUse intent, SecureCredential2 scc)
+   在 System.Net.Security.SecureChannel.AcquireCredentialsHandle(CredentialUse credUsage, SecureCredential2& secureCredential)
+   在 System.Net.Security.SecureChannel.AcquireCredentialsHandle(CredentialUse credUsage, X509Certificate2 selectedCert, Flags flags)
+   在 System.Net.Security.SecureChannel.AcquireClientCredentials(Byte[]& thumbPrint)
+   在 System.Net.Security.SecureChannel.GenerateToken(Byte[] input, Int32 offset, Int32 count, Byte[]& output)
+   在 System.Net.Security.SecureChannel.NextMessage(Byte[] incoming, Int32 offset, Int32 count)
+   在 System.Net.Security.SslState.StartSendBlob(Byte[] incoming, Int32 count, AsyncProtocolRequest asyncRequest, Boolean renegotiation)
+   在 System.Net.Security.SslState.ForceAuthentication(Boolean receiveFirst, Byte[] buffer, AsyncProtocolRequest asyncRequest, Boolean renegotiation)
+   在 System.Net.Security.SslState.ProcessAuthentication(LazyAsyncResult lazyResult)
+   在 System.Net.TlsStream.CallProcessAuthentication(Object state)
+   在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   在 System.Net.TlsStream.ProcessAuthentication(LazyAsyncResult result)
+   在 System.Net.TlsStream.BeginWrite(Byte[] buffer, Int32 offset, Int32 size, AsyncCallback asyncCallback, Object asyncState)
+   在 System.Net.TlsStream.UnsafeBeginWrite(Byte[] buffer, Int32 offset, Int32 size, AsyncCallback asyncCallback, Object asyncState)
+   在 System.Net.PooledStream.UnsafeBeginWrite(Byte[] buffer, Int32 offset, Int32 size, AsyncCallback callback, Object state)
+   在 System.Net.ConnectStream.WriteHeaders(Boolean async)
+   --- 内部异常堆栈跟踪的结尾 ---
+   在 System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   在 System.Net.Http.HttpClientHandler.GetResponseCallback(IAsyncResult ar)
+   --- 内部异常堆栈跟踪的结尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 GitHub.GitHubRestApi.<GetMetaInfoAsync>d__5.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 GitHub.Diagnostics.GitHubApiDiagnostic.<RunInternalAsync>d__2.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 GitCredentialManager.Diagnostics.Diagnostic.<RunAsync>d__6.MoveNext()
+Log:
+Using 'https://github.com/' as API target.
+Querying '/meta' endpoint...
