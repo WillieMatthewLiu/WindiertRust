@@ -14,31 +14,34 @@
 
 - The current directory is the main repository worktree on branch `main`.
 - The workspace is no longer empty. The Cargo workspace, crates, driver skeleton, packaging glue, host-validation scripts, and README described below already exist in the repository.
-- Task 1 through Task 5 have concrete implementations and passing crate-level verification as of 2026-04-08.
-- Task 6 exists, but remains only partially complete: CLI command registration and PowerShell smoke scripts pass, while the subcommands and host-validation flow are still placeholder-level.
+- Task 1 through Task 6 now have concrete implementations and merged verification state as of 2026-04-10.
+- The runtime-first CLI/device transport path, README command docs, PowerShell validation scripts, and minimal driver-glue build assets have been landed on `main`.
 - The adjacent reference implementation lives at `../03PcapWinDivert` and should be used only as a semantic reference for layer/event behavior, not as a line-by-line port target.
 
-## Current Status Snapshot (2026-04-08)
+## Current Status Snapshot (2026-04-10)
 
 - Task 1 `Bootstrap the Cargo Workspace and Protocol Skeleton`: complete.
 - Task 2 `Define Stable ABI Frames and Driver-Shared Constants`: complete.
 - Task 3 `Implement the Filter DSL Compiler to Stable IR`: complete.
 - Task 4 `Implement User-Mode Frames, Typed Handles, and Checksum Helpers`: complete.
 - Task 5 `Implement Kernel-Testable Driver Core for State, Queueing, and Reinjection`: complete for the current pure-Rust testable subset.
-- Task 6 `Wire CLI Tooling and Windows Host Validation Scripts`: partial. Command registration, smoke scripts, and placeholder packaging docs exist, but the CLI behavior and Windows validation are not yet upgraded to real phase-one flows.
+- Task 6 `Wire CLI Tooling and Windows Host Validation Scripts`: complete as runtime-first CLI flow, including stable text/JSON diagnostics, live-device open/probe behavior when present, and upgraded Windows validation scripts.
 
-Fresh verification run on 2026-04-08:
+Fresh verification run on 2026-04-10:
 
-- `cargo test -p wd-proto --test protocol`
-- `cargo test -p wd-driver-shared`
-- `cargo test -p wd-filter --test compile`
-- `cargo test -p wd-user --test user_api`
-- `cargo test -p wd-kmdf`
-- `cargo test -p wd-cli`
-- `cargo check --workspace`
-- `powershell -ExecutionPolicy Bypass -File tests/windows/open_close.ps1`
-- `powershell -ExecutionPolicy Bypass -File tests/windows/network_reinject.ps1`
-- `powershell -ExecutionPolicy Bypass -File tests/windows/five_layer_observe.ps1`
+- `cargo test --offline -p wd-cli`
+- `cargo test --offline -p wd-user`
+- `cargo test --offline -p wd-filter`
+- `cargo test --offline -p wd-proto`
+- `cargo test --offline -p wd-kmdf-core`
+- `cargo test --offline -p wd-kmdf`
+- `cargo check --offline --workspace`
+- `powershell -ExecutionPolicy Bypass -File tests/windows/open_close.ps1 -CliPath target\debug\wd-cli.exe`
+- `powershell -ExecutionPolicy Bypass -File tests/windows/network_reinject.ps1 -CliPath target\debug\wd-cli.exe`
+- `powershell -ExecutionPolicy Bypass -File tests/windows/five_layer_observe.ps1 -CliPath target\debug\wd-cli.exe`
+- `powershell -ExecutionPolicy Bypass -File driver/glue/verify_staged_assets.ps1`
+- `powershell -ExecutionPolicy Bypass -File driver/glue/verify_kmdf_skeleton_assets.ps1`
+- `powershell -ExecutionPolicy Bypass -File driver/glue/verify_host_smoke_build.ps1`
 
 ## Planned File Structure
 
@@ -106,7 +109,7 @@ Fresh verification run on 2026-04-08:
 - Create: `crates/wd-proto/src/lib.rs`
 - Test: `crates/wd-proto/tests/protocol.rs`
 
-- [ ] **Step 1: Write the failing protocol smoke test**
+- [x] **Step 1: Write the failing protocol smoke test**
 
 ```rust
 use wd_proto::{CapabilityFlags, Layer, ProtocolVersion};
@@ -126,12 +129,12 @@ fn protocol_version_and_layers_match_phase_one_contract() {
 }
 ```
 
-- [ ] **Step 2: Run the targeted test to confirm the workspace is not implemented yet**
+- [x] **Step 2: Run the targeted test to confirm the workspace is not implemented yet**
 
 Run: `cargo test -p wd-proto protocol_version_and_layers_match_phase_one_contract -- --exact`
 Expected: FAIL with a workspace or unresolved import error because `wd-proto` does not exist yet.
 
-- [ ] **Step 3: Create the minimal workspace manifests and proto crate**
+- [x] **Step 3: Create the minimal workspace manifests and proto crate**
 
 ```toml
 # Cargo.toml
@@ -206,7 +209,7 @@ bitflags! {
 }
 ```
 
-- [ ] **Step 4: Re-run the targeted test and the workspace check**
+- [x] **Step 4: Re-run the targeted test and the workspace check**
 
 Run: `cargo test -p wd-proto protocol_version_and_layers_match_phase_one_contract -- --exact`
 Expected: PASS
@@ -214,7 +217,7 @@ Expected: PASS
 Run: `cargo check --workspace`
 Expected: FAIL because the remaining workspace members are declared but not implemented yet.
 
-- [ ] **Step 5: Create stub manifests for the remaining members so the workspace resolves**
+- [x] **Step 5: Create stub manifests for the remaining members so the workspace resolves**
 
 ```toml
 # crates/wd-filter/Cargo.toml
@@ -254,7 +257,7 @@ pub fn placeholder() {}
 fn main() {}
 ```
 
-- [ ] **Step 6: Verify the workspace bootstrap checkpoint**
+- [x] **Step 6: Verify the workspace bootstrap checkpoint**
 
 Run: `cargo check --workspace`
 Expected: PASS with placeholder crates compiling.
@@ -270,7 +273,7 @@ Expected: PASS with placeholder crates compiling.
 - Create: `crates/wd-driver-shared/tests/layout.rs`
 - Test: `crates/wd-proto/tests/protocol.rs`
 
-- [ ] **Step 1: Add failing tests for frame layout and version negotiation**
+- [x] **Step 1: Add failing tests for frame layout and version negotiation**
 
 ```rust
 use wd_driver_shared::{DEVICE_NAME, IOCTL_OPEN};
@@ -293,12 +296,12 @@ fn open_response_exposes_capabilities() {
 }
 ```
 
-- [ ] **Step 2: Run the ABI tests**
+- [x] **Step 2: Run the ABI tests**
 
 Run: `cargo test -p wd-proto --test protocol`
 Expected: FAIL with missing `OpenRequest`, `OpenResponse`, or `wd-driver-shared` items.
 
-- [ ] **Step 3: Implement the ABI structs and constants**
+- [x] **Step 3: Implement the ABI structs and constants**
 
 ```rust
 // crates/wd-proto/src/lib.rs
@@ -352,7 +355,7 @@ pub const IOCTL_RECV: u32 = 0x8000_2004;
 pub const IOCTL_SEND: u32 = 0x8000_2008;
 ```
 
-- [ ] **Step 4: Verify ABI and layout tests**
+- [x] **Step 4: Verify ABI and layout tests**
 
 Run: `cargo test -p wd-driver-shared`
 Expected: PASS
@@ -360,7 +363,7 @@ Expected: PASS
 Run: `cargo test -p wd-proto --test protocol`
 Expected: PASS
 
-- [ ] **Step 5: Lock in a no-placeholder workspace checkpoint**
+- [x] **Step 5: Lock in a no-placeholder workspace checkpoint**
 
 Run: `cargo check --workspace`
 Expected: PASS
@@ -377,7 +380,7 @@ Expected: PASS
 - Create: `crates/wd-filter/src/ir.rs`
 - Test: `crates/wd-filter/tests/compile.rs`
 
-- [ ] **Step 1: Write failing compile tests for boolean logic, symbolic fields, and packet access**
+- [x] **Step 1: Write failing compile tests for boolean logic, symbolic fields, and packet access**
 
 ```rust
 use wd_filter::{compile, FilterIr, LayerMask, OpCode};
@@ -404,12 +407,12 @@ fn reject_flow_packet_access() {
 }
 ```
 
-- [ ] **Step 2: Run the filter tests to observe the initial failures**
+- [x] **Step 2: Run the filter tests to observe the initial failures**
 
 Run: `cargo test -p wd-filter --test compile`
 Expected: FAIL because `compile`, `FilterIr`, and the IR model do not exist yet.
 
-- [ ] **Step 3: Implement lexer, parser, semantic analysis, and IR lowering**
+- [x] **Step 3: Implement lexer, parser, semantic analysis, and IR lowering**
 
 ```rust
 // crates/wd-filter/src/lib.rs
@@ -472,7 +475,7 @@ pub struct FilterIr {
 }
 ```
 
-- [ ] **Step 4: Verify the compiler behavior**
+- [x] **Step 4: Verify the compiler behavior**
 
 Run: `cargo test -p wd-filter --test compile`
 Expected: PASS
@@ -480,7 +483,7 @@ Expected: PASS
 Run: `cargo test -p wd-filter`
 Expected: PASS
 
-- [ ] **Step 5: Verify workspace integration after adding real compiler code**
+- [x] **Step 5: Verify workspace integration after adding real compiler code**
 
 Run: `cargo check --workspace`
 Expected: PASS
@@ -498,7 +501,7 @@ Expected: PASS
 - Modify: `crates/wd-user/src/lib.rs`
 - Test: `crates/wd-user/tests/user_api.rs`
 
-- [ ] **Step 1: Write failing tests for open configuration, event decode, and checksum repair**
+- [x] **Step 1: Write failing tests for open configuration, event decode, and checksum repair**
 
 ```rust
 use wd_proto::{Layer, OpenResponse};
@@ -527,12 +530,12 @@ fn negotiated_capabilities_are_exposed_to_callers() {
 }
 ```
 
-- [ ] **Step 2: Run the user-mode tests**
+- [x] **Step 2: Run the user-mode tests**
 
 Run: `cargo test -p wd-user --test user_api`
 Expected: FAIL because `HandleConfig`, `RecvEvent`, and checksum helpers do not exist yet.
 
-- [ ] **Step 3: Implement the user-mode API around compiled filter IR and frame codecs**
+- [x] **Step 3: Implement the user-mode API around compiled filter IR and frame codecs**
 
 ```rust
 // crates/wd-user/src/lib.rs
@@ -580,7 +583,7 @@ impl HandleConfig {
 }
 ```
 
-- [ ] **Step 4: Verify typed-handle and frame-codec behavior**
+- [x] **Step 4: Verify typed-handle and frame-codec behavior**
 
 Run: `cargo test -p wd-user --test user_api`
 Expected: PASS
@@ -588,7 +591,7 @@ Expected: PASS
 Run: `cargo test -p wd-user`
 Expected: PASS
 
-- [ ] **Step 5: Verify cross-crate integration**
+- [x] **Step 5: Verify cross-crate integration**
 
 Run: `cargo check --workspace`
 Expected: PASS
@@ -608,7 +611,7 @@ Expected: PASS
 - Test: `driver/wd-kmdf/tests/reinject.rs`
 - Test: `driver/wd-kmdf/tests/queue.rs`
 
-- [ ] **Step 1: Write failing driver-core tests for lifecycle, filter matching, and one-shot reinjection tokens**
+- [x] **Step 1: Write failing driver-core tests for lifecycle, filter matching, and one-shot reinjection tokens**
 
 ```rust
 use wd_kmdf::{DriverEvent, FilterEngine, HandleState, ReinjectionTable};
@@ -640,12 +643,12 @@ fn reinjection_tokens_are_single_use() {
 }
 ```
 
-- [ ] **Step 2: Run the driver-core tests**
+- [x] **Step 2: Run the driver-core tests**
 
 Run: `cargo test -p wd-kmdf`
 Expected: FAIL because the driver-core modules are placeholders.
 
-- [ ] **Step 3: Implement the pure-Rust driver logic**
+- [x] **Step 3: Implement the pure-Rust driver logic**
 
 ```rust
 // driver/wd-kmdf/src/lib.rs
@@ -681,7 +684,7 @@ impl HandleState {
 }
 ```
 
-- [ ] **Step 4: Verify kernel-testable logic without a live device**
+- [x] **Step 4: Verify kernel-testable logic without a live device**
 
 Run: `cargo test -p wd-kmdf`
 Expected: PASS
@@ -689,7 +692,7 @@ Expected: PASS
 Run: `cargo check --workspace`
 Expected: PASS
 
-- [ ] **Step 5: Add a queue pressure regression test**
+- [x] **Step 5: Add a queue pressure regression test**
 
 ```rust
 #[test]
@@ -727,7 +730,7 @@ Expected: PASS
 - Create: `driver/glue/build.ps1`
 - Create: `README.md`
 
-- [ ] **Step 1: Write failing smoke tests for CLI command registration**
+- [x] **Step 1: Write failing smoke tests for CLI command registration**
 
 ```rust
 use clap::CommandFactory;
@@ -744,12 +747,12 @@ fn cli_exposes_phase_one_commands() {
 }
 ```
 
-- [ ] **Step 2: Run the CLI smoke test**
+- [x] **Step 2: Run the CLI smoke test**
 
 Run: `cargo test -p wd-cli cli_exposes_phase_one_commands -- --exact`
 Expected: FAIL because the CLI crate does not expose the command surface yet.
 
-- [ ] **Step 3: Implement CLI dispatch and host-validation scripts**
+- [x] **Step 3: Implement CLI dispatch and host-validation scripts**
 
 ```rust
 // crates/wd-cli/src/lib.rs
@@ -790,7 +793,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 ```
 
-- [ ] **Step 4: Verify CLI registration and workspace docs**
+- [x] **Step 4: Verify CLI registration and workspace docs**
 
 Run: `cargo test -p wd-cli`
 Expected: PASS
@@ -798,7 +801,7 @@ Expected: PASS
 Run: `cargo check --workspace`
 Expected: PASS
 
-- [ ] **Step 5: Document the Windows packaging and host validation flow**
+- [x] **Step 5: Document the Windows packaging and host validation flow**
 
 Run: `find tests/windows -maxdepth 1 -type f | sort`
 Expected: PASS with `tests/windows/open_close.ps1`, `tests/windows/network_reinject.ps1`, and `tests/windows/five_layer_observe.ps1` listed.

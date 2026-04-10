@@ -8,6 +8,8 @@
 
 **Tech Stack:** Rust stable, `clap`, existing workspace crates (`wd-filter`, `wd-user`, `wd-kmdf`, `wd-proto`), PowerShell validation scripts.
 
+**Status (2026-04-10):** Complete and merged to `main`. The original deterministic "real subcommands" rollout was finished and then further closed through the runtime-first transport/device path.
+
 ---
 
 ## Scope and Assumptions
@@ -69,7 +71,7 @@ Each subcommand is considered real only when all of the following are true:
 - Modify: `crates/wd-cli/tests/cli.rs`
 - Create: `crates/wd-cli/tests/commands.rs`
 
-- [ ] **Step 1: Define the output contract per command**
+- [x] **Step 1: Define the output contract per command**
 
 Lock in one stable summary line per command so tests and scripts can parse it:
 
@@ -79,7 +81,7 @@ Lock in one stable summary line per command so tests and scripts can parse it:
 - `reflectctl`: `REFLECTCTL OK capabilities=<n> state=<STATE>`
 - `flowtrack`: `FLOWTRACK OK event=<name> flow_id=<n> process_id=<n>`
 
-- [ ] **Step 2: Add failing CLI behavior tests for the output contract**
+- [x] **Step 2: Add failing CLI behavior tests for the output contract**
 
 Write Rust tests in `crates/wd-cli/tests/commands.rs` that invoke command entrypoints directly and assert:
 
@@ -90,12 +92,12 @@ Write Rust tests in `crates/wd-cli/tests/commands.rs` that invoke command entryp
 - `reflectctl` prints `state=Closed`
 - `flowtrack` prints `FLOWTRACK OK`
 
-- [ ] **Step 3: Run the focused CLI behavior test and confirm RED**
+- [x] **Step 3: Run the focused CLI behavior test and confirm RED**
 
 Run: `cargo test -p wd-cli --test commands`
 Expected: FAIL because the command modules still only print placeholder strings and take no meaningful arguments.
 
-- [ ] **Step 4: Add shared helpers for formatting and deterministic fixtures**
+- [x] **Step 4: Add shared helpers for formatting and deterministic fixtures**
 
 Create:
 
@@ -108,7 +110,7 @@ Create:
   - one deterministic reflect open-response fixture
   - one deterministic flow event fixture
 
-- [ ] **Step 5: Re-run the focused CLI behavior test**
+- [x] **Step 5: Re-run the focused CLI behavior test**
 
 Run: `cargo test -p wd-cli --test commands`
 Expected: still FAIL, but now the command modules have the shared pieces needed for the later tasks.
@@ -120,7 +122,7 @@ Expected: still FAIL, but now the command modules have the shared pieces needed 
 - Modify: `crates/wd-cli/tests/commands.rs`
 - Modify: `tests/windows/network_reinject.ps1`
 
-- [ ] **Step 1: Add a failing `netfilter` test around real arguments**
+- [x] **Step 1: Add a failing `netfilter` test around real arguments**
 
 Test behavior:
 
@@ -131,12 +133,12 @@ Test behavior:
 - `wd-cli netfilter --filter "event == OPEN"`
   - fails because the filter is incompatible with `Layer::Network`
 
-- [ ] **Step 2: Run the exact `netfilter` test and verify RED**
+- [x] **Step 2: Run the exact `netfilter` test and verify RED**
 
 Run: `cargo test -p wd-cli netfilter_ -- --nocapture`
 Expected: FAIL because `NetfilterCmd` currently has no fields and only prints a placeholder string.
 
-- [ ] **Step 3: Implement the real `netfilter` command**
+- [x] **Step 3: Implement the real `netfilter` command**
 
 Add arguments:
 
@@ -151,7 +153,7 @@ Implementation path:
 - print the stable `NETFILTER OK ...` summary line
 - return non-zero with a real error message on filter incompatibility or compile failure
 
-- [ ] **Step 4: Upgrade `tests/windows/network_reinject.ps1`**
+- [x] **Step 4: Upgrade `tests/windows/network_reinject.ps1`**
 
 Make the script assert output contains:
 
@@ -162,7 +164,7 @@ and invoke:
 
 `wd-cli.exe netfilter --filter "tcp and inbound"`
 
-- [ ] **Step 5: Re-run the `netfilter` test and script**
+- [x] **Step 5: Re-run the `netfilter` test and script**
 
 Run:
 
@@ -178,7 +180,7 @@ Expected: PASS
 - Modify: `crates/wd-cli/tests/commands.rs`
 - Modify: `tests/windows/five_layer_observe.ps1`
 
-- [ ] **Step 1: Add a failing `netdump` test around decoded packet output**
+- [x] **Step 1: Add a failing `netdump` test around decoded packet output**
 
 Test behavior:
 
@@ -187,12 +189,12 @@ Test behavior:
   - prints TTL and header checksum fields
   - prints `NETDUMP OK`
 
-- [ ] **Step 2: Run the `netdump` test and verify RED**
+- [x] **Step 2: Run the `netdump` test and verify RED**
 
 Run: `cargo test -p wd-cli netdump_ -- --nocapture`
 Expected: FAIL because `NetdumpCmd` still only prints a placeholder string.
 
-- [ ] **Step 3: Implement the real `netdump` command**
+- [x] **Step 3: Implement the real `netdump` command**
 
 Implementation path:
 
@@ -205,14 +207,14 @@ Implementation path:
   - `ttl=<n>`
   - `checksum=<hex>`
 
-- [ ] **Step 4: Upgrade `tests/windows/five_layer_observe.ps1` for `netdump`**
+- [x] **Step 4: Upgrade `tests/windows/five_layer_observe.ps1` for `netdump`**
 
 Capture command output and assert:
 
 - `NETDUMP OK`
 - `layer=NETWORK`
 
-- [ ] **Step 5: Re-run the `netdump` test and script**
+- [x] **Step 5: Re-run the `netdump` test and script**
 
 Run:
 
@@ -228,7 +230,7 @@ Expected: `netdump` assertions PASS; the script may still fail later until `flow
 - Modify: `crates/wd-cli/tests/commands.rs`
 - Modify: `tests/windows/open_close.ps1`
 
-- [ ] **Step 1: Add a failing `reflectctl` test around open/close lifecycle output**
+- [x] **Step 1: Add a failing `reflectctl` test around open/close lifecycle output**
 
 Test behavior:
 
@@ -237,12 +239,12 @@ Test behavior:
   - walks `HandleState` through `opening -> running -> recv shutdown -> send shutdown -> closed`
   - prints `REFLECTCTL OK capabilities=31 state=Closed`
 
-- [ ] **Step 2: Run the `reflectctl` test and verify RED**
+- [x] **Step 2: Run the `reflectctl` test and verify RED**
 
 Run: `cargo test -p wd-cli reflectctl_ -- --nocapture`
 Expected: FAIL because `ReflectctlCmd` is still placeholder-only.
 
-- [ ] **Step 3: Implement the real `reflectctl` command**
+- [x] **Step 3: Implement the real `reflectctl` command**
 
 Implementation path:
 
@@ -251,14 +253,14 @@ Implementation path:
 - print negotiated capabilities and final state
 - return non-zero if any lifecycle transition fails
 
-- [ ] **Step 4: Upgrade `tests/windows/open_close.ps1`**
+- [x] **Step 4: Upgrade `tests/windows/open_close.ps1`**
 
 Make the script assert output contains:
 
 - `REFLECTCTL OK`
 - `state=Closed`
 
-- [ ] **Step 5: Re-run the `reflectctl` test and script**
+- [x] **Step 5: Re-run the `reflectctl` test and script**
 
 Run:
 
@@ -274,7 +276,7 @@ Expected: PASS
 - Modify: `crates/wd-cli/tests/commands.rs`
 - Modify: `tests/windows/five_layer_observe.ps1`
 
-- [ ] **Step 1: Add a failing `socketdump` test around filter matching output**
+- [x] **Step 1: Add a failing `socketdump` test around filter matching output**
 
 Test behavior:
 
@@ -283,12 +285,12 @@ Test behavior:
   - evaluates a deterministic socket-connect fixture
   - prints `SOCKETDUMP OK event=CONNECT process_id=7 matched=true`
 
-- [ ] **Step 2: Run the `socketdump` test and verify RED**
+- [x] **Step 2: Run the `socketdump` test and verify RED**
 
 Run: `cargo test -p wd-cli socketdump_ -- --nocapture`
 Expected: FAIL because `SocketdumpCmd` takes no arguments and does not use the filter engine.
 
-- [ ] **Step 3: Implement the real `socketdump` command**
+- [x] **Step 3: Implement the real `socketdump` command**
 
 Add arguments:
 
@@ -301,14 +303,14 @@ Implementation path:
 - build a deterministic `DriverEvent::socket_connect(process_id)`
 - evaluate and print the stable summary line
 
-- [ ] **Step 4: Upgrade `tests/windows/five_layer_observe.ps1` for `socketdump`**
+- [x] **Step 4: Upgrade `tests/windows/five_layer_observe.ps1` for `socketdump`**
 
 Capture command output and assert:
 
 - `SOCKETDUMP OK`
 - `matched=true`
 
-- [ ] **Step 5: Re-run the `socketdump` test and script**
+- [x] **Step 5: Re-run the `socketdump` test and script**
 
 Run:
 
@@ -326,7 +328,7 @@ Expected: `socketdump` assertions PASS; the script may still fail later until `f
 - Modify: `crates/wd-cli/tests/commands.rs`
 - Modify: `tests/windows/five_layer_observe.ps1`
 
-- [ ] **Step 1: Add failing driver-core tests for a minimal flow event subset**
+- [x] **Step 1: Add failing driver-core tests for a minimal flow event subset**
 
 Target subset:
 
@@ -336,12 +338,12 @@ Target subset:
 - ability to validate `layer == FLOW`
 - optional support for `processId == <n>`
 
-- [ ] **Step 2: Run the focused `wd-kmdf` flow test and verify RED**
+- [x] **Step 2: Run the focused `wd-kmdf` flow test and verify RED**
 
 Run: `cargo test -p wd-kmdf flow_ -- --nocapture`
 Expected: FAIL because the current driver-event/filter subset has no flow event model.
 
-- [ ] **Step 3: Implement the minimal flow subset in `wd-kmdf`**
+- [x] **Step 3: Implement the minimal flow subset in `wd-kmdf`**
 
 Implementation path:
 
@@ -350,7 +352,7 @@ Implementation path:
 - extend field validation/evaluation only as far as required by the `flowtrack` command
 - do not overbuild a general flow engine beyond the single deterministic subset required here
 
-- [ ] **Step 4: Add a failing `flowtrack` CLI test**
+- [x] **Step 4: Add a failing `flowtrack` CLI test**
 
 Test behavior:
 
@@ -358,12 +360,12 @@ Test behavior:
   - evaluates a deterministic flow event
   - prints `FLOWTRACK OK event=ESTABLISHED flow_id=<n> process_id=42`
 
-- [ ] **Step 5: Run the `flowtrack` CLI test and verify RED**
+- [x] **Step 5: Run the `flowtrack` CLI test and verify RED**
 
 Run: `cargo test -p wd-cli flowtrack_ -- --nocapture`
 Expected: FAIL because `FlowtrackCmd` still only prints a placeholder string.
 
-- [ ] **Step 6: Implement the real `flowtrack` command**
+- [x] **Step 6: Implement the real `flowtrack` command**
 
 Add arguments:
 
@@ -375,14 +377,14 @@ Implementation path:
 - optionally validate it through the new minimal flow filter/evaluation subset
 - print the stable `FLOWTRACK OK ...` summary line
 
-- [ ] **Step 7: Upgrade `tests/windows/five_layer_observe.ps1` for `flowtrack`**
+- [x] **Step 7: Upgrade `tests/windows/five_layer_observe.ps1` for `flowtrack`**
 
 Capture command output and assert:
 
 - `FLOWTRACK OK`
 - `process_id=<n>`
 
-- [ ] **Step 8: Re-run the flow tests and the observe script**
+- [x] **Step 8: Re-run the flow tests and the observe script**
 
 Run:
 
@@ -398,7 +400,7 @@ Expected: PASS
 - Modify: `README.md`
 - Modify: `docs/superpowers/plans/2026-04-07-rust-windivert-rewrite.md`
 
-- [ ] **Step 1: Update README command examples**
+- [x] **Step 1: Update README command examples**
 
 Document for each subcommand:
 
@@ -407,11 +409,11 @@ Document for each subcommand:
 - exact summary line shape
 - what is real versus still simulated in phase one
 
-- [ ] **Step 2: Update the main rewrite plan**
+- [x] **Step 2: Update the main rewrite plan**
 
 Revise Task 6 status from "partial placeholder flow" to "implemented deterministic real CLI flow" once the code and scripts are actually green.
 
-- [ ] **Step 3: Run full Task 6 verification**
+- [x] **Step 3: Run full Task 6 verification**
 
 Run:
 

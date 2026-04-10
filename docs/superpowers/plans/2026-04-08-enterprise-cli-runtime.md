@@ -8,6 +8,8 @@
 
 **Tech Stack:** Rust stable, `clap`, `thiserror`, `wd-user`, `wd-proto`, `wd-driver-shared`, `wd-kmdf`, PowerShell validation scripts, Windows device I/O via Rust Windows bindings.
 
+**Status (2026-04-10):** Complete and merged to `main`. Runtime probing/open/send/recv, CLI runtime error/output contracts, README updates, PowerShell validation, and driver-glue minimal build assets are all landed.
+
 ---
 
 ## Planned File Structure
@@ -51,7 +53,7 @@
 - Modify: `Cargo.toml`
 - Modify: `Cargo.lock`
 
-- [ ] **Step 1: Write failing transport/probe tests**
+- [x] **Step 1: Write failing transport/probe tests**
 
 ```rust
 use wd_user::{DeviceAvailability, RuntimeError, RuntimeProbe, RuntimeTransport};
@@ -87,12 +89,12 @@ fn open_maps_missing_device_to_runtime_error() {
 }
 ```
 
-- [ ] **Step 2: Run the new runtime tests to verify they fail**
+- [x] **Step 2: Run the new runtime tests to verify they fail**
 
 Run: `cargo test -p wd-user --test runtime`
 Expected: FAIL because `RuntimeTransport`, `RuntimeError`, `DeviceAvailability`, and `RuntimeProbe` do not exist yet.
 
-- [ ] **Step 3: Add Windows dependency and runtime modules**
+- [x] **Step 3: Add Windows dependency and runtime modules**
 
 ```toml
 # crates/wd-user/Cargo.toml
@@ -130,7 +132,7 @@ pub use windows::WindowsTransport;
 pub mod test_support;
 ```
 
-- [ ] **Step 4: Implement the shared runtime types**
+- [x] **Step 4: Implement the shared runtime types**
 
 ```rust
 // crates/wd-user/src/device.rs
@@ -231,7 +233,7 @@ impl RuntimeError {
 }
 ```
 
-- [ ] **Step 5: Implement the first Windows transport path**
+- [x] **Step 5: Implement the first Windows transport path**
 
 ```rust
 // crates/wd-user/src/windows.rs
@@ -291,12 +293,12 @@ impl RuntimeTransport for WindowsTransport {
 }
 ```
 
-- [ ] **Step 6: Run the runtime tests to verify they pass**
+- [x] **Step 6: Run the runtime tests to verify they pass**
 
 Run: `cargo test -p wd-user --test runtime`
 Expected: PASS
 
-- [ ] **Step 7: Commit the runtime transport foundation**
+- [x] **Step 7: Commit the runtime transport foundation**
 
 ```bash
 git add Cargo.toml Cargo.lock crates/wd-user/Cargo.toml crates/wd-user/src/lib.rs crates/wd-user/src/device.rs crates/wd-user/src/runtime.rs crates/wd-user/src/windows.rs crates/wd-user/tests/runtime.rs
@@ -314,7 +316,7 @@ git commit -m "feat: add wd-user runtime probe foundation"
 - Create: `crates/wd-cli/src/error.rs`
 - Create: `crates/wd-cli/tests/runtime_errors.rs`
 
-- [ ] **Step 1: Write failing CLI error/output tests**
+- [x] **Step 1: Write failing CLI error/output tests**
 
 ```rust
 use wd_cli::error::CliError;
@@ -341,12 +343,12 @@ fn json_errors_include_stable_fields() {
 }
 ```
 
-- [ ] **Step 2: Run the CLI error tests to verify they fail**
+- [x] **Step 2: Run the CLI error tests to verify they fail**
 
 Run: `cargo test -p wd-cli --test runtime_errors`
 Expected: FAIL because `CliError` and output renderers do not exist yet.
 
-- [ ] **Step 3: Add CLI output mode and error types**
+- [x] **Step 3: Add CLI output mode and error types**
 
 ```rust
 // crates/wd-cli/src/error.rs
@@ -399,7 +401,7 @@ pub fn render_error_json(err: &CliError) -> String {
 }
 ```
 
-- [ ] **Step 4: Add shared runtime helpers for command modules**
+- [x] **Step 4: Add shared runtime helpers for command modules**
 
 ```rust
 // crates/wd-cli/src/runtime.rs
@@ -428,12 +430,12 @@ pub fn exit_code(code: u8) -> ExitCode {
 }
 ```
 
-- [ ] **Step 5: Run the CLI error tests to verify they pass**
+- [x] **Step 5: Run the CLI error tests to verify they pass**
 
 Run: `cargo test -p wd-cli --test runtime_errors`
 Expected: PASS
 
-- [ ] **Step 6: Commit the CLI runtime/error foundation**
+- [x] **Step 6: Commit the CLI runtime/error foundation**
 
 ```bash
 git add crates/wd-cli/Cargo.toml crates/wd-cli/src/lib.rs crates/wd-cli/src/cmd/common.rs crates/wd-cli/src/runtime.rs crates/wd-cli/src/output.rs crates/wd-cli/src/error.rs crates/wd-cli/tests/runtime_errors.rs
@@ -447,7 +449,7 @@ git commit -m "feat: add shared CLI runtime error handling"
 - Modify: `crates/wd-cli/tests/commands.rs`
 - Modify: `tests/windows/open_close.ps1`
 
-- [ ] **Step 1: Write the failing `reflectctl` runtime tests**
+- [x] **Step 1: Write the failing `reflectctl` runtime tests**
 
 ```rust
 #[test]
@@ -460,12 +462,12 @@ fn reflectctl_probe_reports_device_missing_with_nonzero_exit() {
 }
 ```
 
-- [ ] **Step 2: Run the `reflectctl` tests to verify they fail**
+- [x] **Step 2: Run the `reflectctl` tests to verify they fail**
 
 Run: `cargo test -p wd-cli reflectctl_ -- --nocapture`
 Expected: FAIL because `reflectctl` still uses deterministic scaffolding rather than the shared runtime error path.
 
-- [ ] **Step 3: Implement `reflectctl` actions on top of the runtime layer**
+- [x] **Step 3: Implement `reflectctl` actions on top of the runtime layer**
 
 ```rust
 // crates/wd-cli/src/cmd/reflectctl.rs
@@ -502,7 +504,7 @@ Implement `execute()` so it:
   - `REFLECTCTL OK device=ready capabilities=<n> protocol=<major.minor> state=Open`
   - or a JSON success object
 
-- [ ] **Step 4: Upgrade the Windows control-path script**
+- [x] **Step 4: Upgrade the Windows control-path script**
 
 ```powershell
 $output = & $CliPath reflectctl --action probe
@@ -517,7 +519,7 @@ else {
 }
 ```
 
-- [ ] **Step 5: Run the `reflectctl` tests and script**
+- [x] **Step 5: Run the `reflectctl` tests and script**
 
 Run:
 - `cargo test -p wd-cli reflectctl_ -- --nocapture`
@@ -525,7 +527,7 @@ Run:
 
 Expected: PASS
 
-- [ ] **Step 6: Commit the `reflectctl` runtime conversion**
+- [x] **Step 6: Commit the `reflectctl` runtime conversion**
 
 ```bash
 git add crates/wd-cli/src/cmd/reflectctl.rs crates/wd-cli/tests/commands.rs tests/windows/open_close.ps1
@@ -539,7 +541,7 @@ git commit -m "feat: convert reflectctl to runtime probe path"
 - Modify: `crates/wd-cli/tests/commands.rs`
 - Modify: `tests/windows/five_layer_observe.ps1`
 
-- [ ] **Step 1: Write failing `netdump` argument and error-path tests**
+- [x] **Step 1: Write failing `netdump` argument and error-path tests**
 
 ```rust
 #[test]
@@ -552,12 +554,12 @@ fn netdump_json_errors_when_device_is_missing() {
 }
 ```
 
-- [ ] **Step 2: Run the `netdump` tests to verify they fail**
+- [x] **Step 2: Run the `netdump` tests to verify they fail**
 
 Run: `cargo test -p wd-cli netdump_ -- --nocapture`
 Expected: FAIL because `netdump` still consumes deterministic fixtures and returns success.
 
-- [ ] **Step 3: Replace fixture-only behavior with runtime open/recv**
+- [x] **Step 3: Replace fixture-only behavior with runtime open/recv**
 
 ```rust
 #[derive(Debug, Args)]
@@ -587,7 +589,7 @@ Implement `execute()` so it:
   - `NETDUMP OK layer=NETWORK ttl=<n> checksum=<hex> packet_len=<n> timestamp=<ts>`
   - or JSON with the same stable fields
 
-- [ ] **Step 4: Update the Windows observe script for `netdump`**
+- [x] **Step 4: Update the Windows observe script for `netdump`**
 
 ```powershell
 $netdump = & $CliPath netdump
@@ -603,7 +605,7 @@ else {
 }
 ```
 
-- [ ] **Step 5: Run the `netdump` tests and script**
+- [x] **Step 5: Run the `netdump` tests and script**
 
 Run:
 - `cargo test -p wd-cli netdump_ -- --nocapture`
@@ -611,7 +613,7 @@ Run:
 
 Expected: PASS for the `netdump` segment; later parts may still fail until their commands are converted.
 
-- [ ] **Step 6: Commit the `netdump` runtime conversion**
+- [x] **Step 6: Commit the `netdump` runtime conversion**
 
 ```bash
 git add crates/wd-cli/src/cmd/netdump.rs crates/wd-cli/tests/commands.rs tests/windows/five_layer_observe.ps1
@@ -626,7 +628,7 @@ git commit -m "feat: convert netdump to runtime receive path"
 - Modify: `crates/wd-cli/tests/commands.rs`
 - Modify: `tests/windows/five_layer_observe.ps1`
 
-- [ ] **Step 1: Write failing observation-command error tests**
+- [x] **Step 1: Write failing observation-command error tests**
 
 ```rust
 #[test]
@@ -646,12 +648,12 @@ fn flowtrack_json_errors_when_device_is_missing() {
 }
 ```
 
-- [ ] **Step 2: Run the observation-command tests to verify they fail**
+- [x] **Step 2: Run the observation-command tests to verify they fail**
 
 Run: `cargo test -p wd-cli 'socketdump_|flowtrack_' -- --nocapture`
 Expected: FAIL because both commands still return deterministic success.
 
-- [ ] **Step 3: Implement `socketdump` runtime observation mode**
+- [x] **Step 3: Implement `socketdump` runtime observation mode**
 
 ```rust
 #[derive(Debug, Args)]
@@ -680,7 +682,7 @@ Implement it so it:
 - returns code `3` when the device is unavailable
 - returns one-shot or streaming socket event output using the shared renderer
 
-- [ ] **Step 4: Implement `flowtrack` runtime observation mode**
+- [x] **Step 4: Implement `flowtrack` runtime observation mode**
 
 ```rust
 #[derive(Debug, Args)]
@@ -705,7 +707,7 @@ Implement it so it:
 - follows the same device/open/error contract
 - emits one-shot or streaming flow events with stable fields
 
-- [ ] **Step 5: Update the Windows observe script for `socketdump` and `flowtrack`**
+- [x] **Step 5: Update the Windows observe script for `socketdump` and `flowtrack`**
 
 ```powershell
 $flowtrack = & $CliPath flowtrack
@@ -731,7 +733,7 @@ else {
 }
 ```
 
-- [ ] **Step 6: Run the observation-command tests and script**
+- [x] **Step 6: Run the observation-command tests and script**
 
 Run:
 - `cargo test -p wd-cli 'socketdump_|flowtrack_' -- --nocapture`
@@ -739,7 +741,7 @@ Run:
 
 Expected: PASS
 
-- [ ] **Step 7: Commit the observation-command runtime conversion**
+- [x] **Step 7: Commit the observation-command runtime conversion**
 
 ```bash
 git add crates/wd-cli/src/cmd/socketdump.rs crates/wd-cli/src/cmd/flowtrack.rs crates/wd-cli/tests/commands.rs tests/windows/five_layer_observe.ps1
@@ -753,7 +755,7 @@ git commit -m "feat: convert socketdump and flowtrack to runtime commands"
 - Modify: `crates/wd-cli/tests/commands.rs`
 - Modify: `tests/windows/network_reinject.ps1`
 
-- [ ] **Step 1: Write failing `netfilter` mode tests**
+- [x] **Step 1: Write failing `netfilter` mode tests**
 
 ```rust
 #[test]
@@ -773,12 +775,12 @@ fn netfilter_rejects_unknown_mode_count_combination() {
 }
 ```
 
-- [ ] **Step 2: Run the `netfilter` tests to verify they fail**
+- [x] **Step 2: Run the `netfilter` tests to verify they fail**
 
 Run: `cargo test -p wd-cli netfilter_ -- --nocapture`
 Expected: FAIL because `netfilter` still returns deterministic success and has no real mode contract.
 
-- [ ] **Step 3: Implement explicit `validate|observe|reinject` modes**
+- [x] **Step 3: Implement explicit `validate|observe|reinject` modes**
 
 ```rust
 use clap::ValueEnum;
@@ -822,7 +824,7 @@ Implementation rules:
   - remain explicit and guarded
   - return stable runtime errors if reinjection path is unavailable
 
-- [ ] **Step 4: Update the network reinject script**
+- [x] **Step 4: Update the network reinject script**
 
 ```powershell
 $output = & $CliPath netfilter --filter "tcp and inbound" --mode validate
@@ -838,7 +840,7 @@ else {
 }
 ```
 
-- [ ] **Step 5: Run the `netfilter` tests and script**
+- [x] **Step 5: Run the `netfilter` tests and script**
 
 Run:
 - `cargo test -p wd-cli netfilter_ -- --nocapture`
@@ -846,7 +848,7 @@ Run:
 
 Expected: PASS
 
-- [ ] **Step 6: Commit the `netfilter` runtime conversion**
+- [x] **Step 6: Commit the `netfilter` runtime conversion**
 
 ```bash
 git add crates/wd-cli/src/cmd/netfilter.rs crates/wd-cli/tests/commands.rs tests/windows/network_reinject.ps1
@@ -859,7 +861,7 @@ git commit -m "feat: convert netfilter to runtime modes"
 - Modify: `README.md`
 - Modify: `docs/superpowers/plans/2026-04-07-rust-windivert-rewrite.md`
 
-- [ ] **Step 1: Update README command docs**
+- [x] **Step 1: Update README command docs**
 
 Document for every command:
 
@@ -877,11 +879,11 @@ Use examples like:
 NETDUMP ERROR code=3 category=device_unavailable message=WdRust device not found suggestion=verify driver is installed and device link is present
 ```
 
-- [ ] **Step 2: Update the main rewrite plan status**
+- [x] **Step 2: Update the main rewrite plan status**
 
 Add a status line under Task 6 that states the deterministic phase has been replaced by runtime-first commands with uniform diagnostics and exit-code contracts.
 
-- [ ] **Step 3: Run the full enterprise CLI runtime verification**
+- [x] **Step 3: Run the full enterprise CLI runtime verification**
 
 Run:
 - `cargo test -p wd-user --test runtime`
@@ -894,7 +896,7 @@ Run:
 
 Expected: PASS
 
-- [ ] **Step 4: Commit the docs and final verification state**
+- [x] **Step 4: Commit the docs and final verification state**
 
 ```bash
 git add README.md docs/superpowers/plans/2026-04-07-rust-windivert-rewrite.md
