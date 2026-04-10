@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Bootstrap this empty workspace into a Rust-first WinDivert rewrite with a stable protocol crate, a filter compiler, a user-mode API, a testable driver-core crate, minimal Windows packaging glue, CLI tooling, and host-validation scripts aligned to the approved phase-one design.
+**Goal:** Track and complete a Rust-first WinDivert rewrite with a stable protocol crate, a filter compiler, a user-mode API, a testable driver-core crate, minimal Windows packaging glue, CLI tooling, and host-validation scripts aligned to the approved phase-one design.
 
 **Architecture:** Build a Cargo workspace that separates transport-stable protocol types (`wd-proto`), string filter compilation (`wd-filter`), user-mode API and frame codecs (`wd-user`), CLI tooling (`wd-cli`), driver-only shared constants (`wd-driver-shared`), and a KMDF-oriented driver core (`driver/wd-kmdf`). Keep kernel-testable logic in plain Rust modules so filter evaluation, queueing, handle state transitions, and reinjection bookkeeping can be verified without a live Windows device.
 
@@ -12,9 +12,33 @@
 
 ## Current Workspace Notes
 
-- The current directory is not a git worktree, so this plan uses verification checkpoints instead of mandatory commit steps.
-- The workspace is currently empty except for the approved spec at `docs/superpowers/specs/2026-04-07-rust-windivert-rewrite-design.md`.
+- The current directory is the main repository worktree on branch `main`.
+- The workspace is no longer empty. The Cargo workspace, crates, driver skeleton, packaging glue, host-validation scripts, and README described below already exist in the repository.
+- Task 1 through Task 5 have concrete implementations and passing crate-level verification as of 2026-04-08.
+- Task 6 exists, but remains only partially complete: CLI command registration and PowerShell smoke scripts pass, while the subcommands and host-validation flow are still placeholder-level.
 - The adjacent reference implementation lives at `../03PcapWinDivert` and should be used only as a semantic reference for layer/event behavior, not as a line-by-line port target.
+
+## Current Status Snapshot (2026-04-08)
+
+- Task 1 `Bootstrap the Cargo Workspace and Protocol Skeleton`: complete.
+- Task 2 `Define Stable ABI Frames and Driver-Shared Constants`: complete.
+- Task 3 `Implement the Filter DSL Compiler to Stable IR`: complete.
+- Task 4 `Implement User-Mode Frames, Typed Handles, and Checksum Helpers`: complete.
+- Task 5 `Implement Kernel-Testable Driver Core for State, Queueing, and Reinjection`: complete for the current pure-Rust testable subset.
+- Task 6 `Wire CLI Tooling and Windows Host Validation Scripts`: partial. Command registration, smoke scripts, and placeholder packaging docs exist, but the CLI behavior and Windows validation are not yet upgraded to real phase-one flows.
+
+Fresh verification run on 2026-04-08:
+
+- `cargo test -p wd-proto --test protocol`
+- `cargo test -p wd-driver-shared`
+- `cargo test -p wd-filter --test compile`
+- `cargo test -p wd-user --test user_api`
+- `cargo test -p wd-kmdf`
+- `cargo test -p wd-cli`
+- `cargo check --workspace`
+- `powershell -ExecutionPolicy Bypass -File tests/windows/open_close.ps1`
+- `powershell -ExecutionPolicy Bypass -File tests/windows/network_reinject.ps1`
+- `powershell -ExecutionPolicy Bypass -File tests/windows/five_layer_observe.ps1`
 
 ## Planned File Structure
 
@@ -71,6 +95,8 @@
 - Create: `README.md`
 
 ### Task 1: Bootstrap the Cargo Workspace and Protocol Skeleton
+
+**Current status (2026-04-08):** Complete.
 
 **Files:**
 - Create: `Cargo.toml`
@@ -235,6 +261,8 @@ Expected: PASS with placeholder crates compiling.
 
 ### Task 2: Define Stable ABI Frames and Driver-Shared Constants
 
+**Current status (2026-04-08):** Complete.
+
 **Files:**
 - Modify: `crates/wd-proto/src/lib.rs`
 - Create: `crates/wd-driver-shared/Cargo.toml`
@@ -338,6 +366,8 @@ Run: `cargo check --workspace`
 Expected: PASS
 
 ### Task 3: Implement the Filter DSL Compiler to Stable IR
+
+**Current status (2026-04-08):** Complete.
 
 **Files:**
 - Modify: `crates/wd-filter/src/lib.rs`
@@ -457,6 +487,8 @@ Expected: PASS
 
 ### Task 4: Implement User-Mode Frames, Typed Handles, and Checksum Helpers
 
+**Current status (2026-04-08):** Complete.
+
 **Files:**
 - Create: `crates/wd-user/src/error.rs`
 - Create: `crates/wd-user/src/frame.rs`
@@ -562,6 +594,8 @@ Run: `cargo check --workspace`
 Expected: PASS
 
 ### Task 5: Implement Kernel-Testable Driver Core for State, Queueing, and Reinjection
+
+**Current status (2026-04-08):** Complete for the current pure-Rust testable subset.
 
 **Files:**
 - Create: `driver/wd-kmdf/src/state.rs`
