@@ -5,6 +5,7 @@ use std::fmt::{Display, Formatter};
 pub enum UserError {
     FilterCompile(wd_filter::CompileError),
     InvalidFrame(&'static str),
+    RuntimeEventDecode(wd_proto::RuntimeEventDecodeError),
     IncompatibleLayer(&'static str),
     OpenResponseStatus(u32),
     ProtocolVersionMismatch,
@@ -15,6 +16,7 @@ impl Display for UserError {
         match self {
             Self::FilterCompile(err) => write!(f, "{err}"),
             Self::InvalidFrame(msg) => write!(f, "{msg}"),
+            Self::RuntimeEventDecode(err) => write!(f, "{err}"),
             Self::IncompatibleLayer(msg) => write!(f, "{msg}"),
             Self::OpenResponseStatus(status) => {
                 write!(f, "open response returned non-zero status: {status}")
@@ -28,6 +30,7 @@ impl Error for UserError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match self {
             Self::FilterCompile(err) => Some(err),
+            Self::RuntimeEventDecode(err) => Some(err),
             Self::InvalidFrame(_)
             | Self::IncompatibleLayer(_)
             | Self::OpenResponseStatus(_)
@@ -39,5 +42,11 @@ impl Error for UserError {
 impl From<wd_filter::CompileError> for UserError {
     fn from(value: wd_filter::CompileError) -> Self {
         Self::FilterCompile(value)
+    }
+}
+
+impl From<wd_proto::RuntimeEventDecodeError> for UserError {
+    fn from(value: wd_proto::RuntimeEventDecodeError) -> Self {
+        Self::RuntimeEventDecode(value)
     }
 }

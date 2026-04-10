@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{928574C7-9A63-4D9B-8C88-4F276B8A9A31}</ProjectGuid>
+    <Keyword>MakeFileProj</Keyword>
+    <RootNamespace>wd_kmdf_skeleton</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <NMakeBuildCommandLine>powershell -ExecutionPolicy Bypass -File "$(ProjectDir)build_kmdf_skeleton.ps1" -Configuration $(Configuration) -Platform $(Platform)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>powershell -ExecutionPolicy Bypass -File "$(ProjectDir)build_kmdf_skeleton.ps1" -Configuration $(Configuration) -Platform $(Platform)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>powershell -ExecutionPolicy Bypass -Command "if (Test-Path '$(ProjectDir)build\\$(Platform)\\$(Configuration)') { Remove-Item -Recurse -Force '$(ProjectDir)build\\$(Platform)\\$(Configuration)' }"</NMakeCleanCommandLine>
+    <NMakeOutput>$(ProjectDir)build\$(Platform)\$(Configuration)\wd_kmdf_skeleton.lib</NMakeOutput>
+    <OutDir>$(ProjectDir)build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)build\$(Platform)\$(Configuration)\obj\</IntDir>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClCompile Include="Driver.c" />
+    <ClCompile Include="Device.c" />
+    <ClCompile Include="Queue.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FileContext.h" />
+    <ClInclude Include="Trace.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
+    <None Include="build_kmdf_skeleton.ps1" />
+    <None Include="verify_kmdf_skeleton_build.ps1" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

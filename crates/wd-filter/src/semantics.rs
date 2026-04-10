@@ -93,10 +93,27 @@ fn visit_predicate(
     match p {
         Predicate::BareSymbol(symbol) => match symbol.to_ascii_lowercase().as_str() {
             "tcp" => {
+                state.referenced_fields.insert("tcp");
+            }
+            "udp" => {
+                state.referenced_fields.insert("udp");
+            }
+            "ipv4" | "ipv6" => {
                 if polarity {
                     state.required_layers.insert(LayerMask::NETWORK);
+                    state.required_layers.insert(LayerMask::NETWORK_FORWARD);
                 }
-                state.referenced_fields.insert("tcp");
+                state.referenced_fields.insert(if symbol.eq_ignore_ascii_case("ipv4") {
+                    "ipv4"
+                } else {
+                    "ipv6"
+                });
+            }
+            "outbound" => {
+                if polarity {
+                    state.required_layers.insert(LayerMask::NETWORK_FORWARD);
+                }
+                state.referenced_fields.insert("outbound");
             }
             "inbound" => {
                 if polarity {
@@ -201,6 +218,13 @@ fn visit_predicate(
                     }
                 }
             }
+
+            if matches!(field_name, "localPort" | "remotePort" | "localAddr" | "remoteAddr")
+                && polarity
+            {
+                state.required_layers.insert(LayerMask::NETWORK);
+                state.required_layers.insert(LayerMask::NETWORK_FORWARD);
+            }
         }
         Predicate::PacketEq { .. } => {
             state.packet_access_used = true;
@@ -218,6 +242,14 @@ fn canonical_field(field: &str) -> Option<&'static str> {
         "layer" => Some("layer"),
         "processid" => Some("processId"),
         "tcp" => Some("tcp"),
+        "udp" => Some("udp"),
+        "ipv4" => Some("ipv4"),
+        "ipv6" => Some("ipv6"),
+        "localaddr" => Some("localAddr"),
+        "remoteaddr" => Some("remoteAddr"),
+        "localport" => Some("localPort"),
+        "remoteport" => Some("remotePort"),
+        "outbound" => Some("outbound"),
         "inbound" => Some("inbound"),
         _ => None,
     }

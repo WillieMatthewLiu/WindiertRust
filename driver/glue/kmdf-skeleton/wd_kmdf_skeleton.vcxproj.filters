@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{71E0D62A-BF74-485B-8EA9-86E9A956520F}</UniqueIdentifier>
+      <Extensions>c;cpp;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{9D9666A9-7288-4A54-B5A0-52A1A6E05A9A}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Build Files">
+      <UniqueIdentifier>{9D51452D-B98B-45ED-BE69-2D5965B479D0}</UniqueIdentifier>
+      <Extensions>ps1;md</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Driver.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Device.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Queue.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FileContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Trace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md">
+      <Filter>Build Files</Filter>
+    </None>
+    <None Include="build_kmdf_skeleton.ps1">
+      <Filter>Build Files</Filter>
+    </None>
+    <None Include="verify_kmdf_skeleton_build.ps1">
+      <Filter>Build Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

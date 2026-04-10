@@ -1,3 +1,4 @@
+use std::net::Ipv4Addr;
 use std::ops::{BitOr, BitOrAssign};
 
 use thiserror::Error;
@@ -59,6 +60,7 @@ impl BitOrAssign for LayerMask {
 pub enum OpCode {
     FieldTest { field: &'static str, value: u64 },
     PacketLoad32 { offset: u16, value: u32 },
+    PacketLoad16 { offset: u16, value: u16 },
     PacketLoad8 { offset: u16, value: u8 },
     And,
     Or,
@@ -130,6 +132,11 @@ pub fn encode_ir(ir: &FilterIr) -> Vec<u8> {
                 write_u16(&mut out, *offset);
                 write_u32(&mut out, *value);
             }
+            OpCode::PacketLoad16 { offset, value } => {
+                out.push(7);
+                write_u16(&mut out, *offset);
+                write_u16(&mut out, *value);
+            }
             OpCode::PacketLoad8 { offset, value } => {
                 out.push(3);
                 write_u16(&mut out, *offset);
@@ -187,6 +194,10 @@ pub fn decode_ir(bytes: &[u8]) -> Result<FilterIr, DecodeError> {
             2 => OpCode::PacketLoad32 {
                 offset: reader.read_u16()?,
                 value: reader.read_u32()?,
+            },
+            7 => OpCode::PacketLoad16 {
+                offset: reader.read_u16()?,
+                value: reader.read_u16()?,
             },
             3 => OpCode::PacketLoad8 {
                 offset: reader.read_u16()?,
@@ -272,6 +283,15 @@ fn lower_predicate(p: &Predicate, program: &mut Vec<OpCode>) -> Result<(), Seman
                     value: v,
                 });
             }
+            PacketWidth::Word => {
+                let v = u16::try_from(*value).map_err(|_| {
+                    SemanticError::from_message("packet16 value out of range for u16")
+                })?;
+                program.push(OpCode::PacketLoad16 {
+                    offset: *offset,
+                    value: v,
+                });
+            }
             PacketWidth::Byte => {
                 let v = u8::try_from(*value).map_err(|_| {
                     SemanticError::from_message("packet value out of range for u8")
@@ -289,6 +309,10 @@ fn lower_predicate(p: &Predicate, program: &mut Vec<OpCode>) -> Result<(), Seman
 fn map_bool_symbol(symbol: &str) -> Result<&'static str, SemanticError> {
     match symbol.to_ascii_lowercase().as_str() {
         "tcp" => Ok("tcp"),
+        "udp" => Ok("udp"),
+        "ipv4" => Ok("ipv4"),
+        "ipv6" => Ok("ipv6"),
+        "outbound" => Ok("outbound"),
         "inbound" => Ok("inbound"),
         _ => Err(SemanticError::from_message(format!(
             "unsupported symbol '{}'",
@@ -303,6 +327,14 @@ fn map_field(field: &str) -> Result<&'static str, SemanticError> {
         "layer" => Ok("layer"),
         "processid" => Ok("processId"),
         "tcp" => Ok("tcp"),
+        "udp" => Ok("udp"),
+        "ipv4" => Ok("ipv4"),
+        "ipv6" => Ok("ipv6"),
+        "localaddr" => Ok("localAddr"),
+        "remoteaddr" => Ok("remoteAddr"),
+        "localport" => Ok("localPort"),
+        "remoteport" => Ok("remotePort"),
+        "outbound" => Ok("outbound"),
         "inbound" => Ok("inbound"),
         _ => Err(SemanticError::from_message(format!(
             "unsupported field '{}'",
@@ -318,15 +350,54 @@ fn map_value(field: &'static str, value: &Value) -> Result<u64, SemanticError> {
         ("event", Value::Symbol(s)) if s.eq_ignore_ascii_case("open") => Ok(1),
         ("event", Value::Symbol(s)) if s.eq_ignore_ascii_case("connect") => Ok(2),
         ("event", Value::Symbol(s)) if s.eq_ignore_ascii_case("close") => Ok(3),
+        ("event", Value::Symbol(s)) if s.eq_ignore_ascii_case("established") => Ok(4),
         ("layer", Value::Symbol(s)) if s.eq_ignore_ascii_case("network") => Ok(1),
         ("layer", Value::Symbol(s)) if s.eq_ignore_ascii_case("network_forward") => Ok(2),
         ("layer", Value::Symbol(s)) if s.eq_ignore_ascii_case("flow") => Ok(3),
         ("layer", Value::Symbol(s)) if s.eq_ignore_ascii_case("socket") => Ok(4),
         ("layer", Value::Symbol(s)) if s.eq_ignore_ascii_case("reflect") => Ok(5),
+        ("localAddr" | "remoteAddr", Value::Symbol(s)) => {
+            parse_ipv4_match_value(s).map_err(|_| {
+                SemanticError::from_message(format!(
+                    "unsupported symbolic value '{}' for field '{}'",
+                    s, field
+                ))
+            })
+        }
         (_, Value::Symbol(s)) => Err(SemanticError::from_message(format!(
             "unsupported symbolic value '{}' for field '{}'",
             s, field
         ))),
+    }
+}
+
+fn parse_ipv4_match_value(raw: &str) -> Result<u64, String> {
+    if let Some((addr, prefix)) = raw.split_once('/') {
+        let addr = addr
+            .parse::<Ipv4Addr>()
+            .map_err(|_| "invalid ipv4 cidr literal".to_string())?;
+        let prefix = prefix
+            .parse::<u8>()
+            .map_err(|_| "invalid ipv4 cidr prefix".to_string())?;
+        if prefix > 32 {
+            return Err("invalid ipv4 cidr prefix".to_string());
+        }
+        let mask = ipv4_prefix_mask(prefix);
+        let network = u32::from(addr) & mask;
+        return Ok((u64::from(prefix) << 32) | u64::from(network));
+    }
+
+    let addr = raw
+        .parse::<Ipv4Addr>()
+        .map_err(|_| "invalid ipv4 literal".to_string())?;
+    Ok((u64::from(32u8) << 32) | u64::from(u32::from(addr)))
+}
+
+fn ipv4_prefix_mask(prefix: u8) -> u32 {
+    if prefix == 0 {
+        0
+    } else {
+        u32::MAX << (32 - u32::from(prefix))
     }
 }
 
@@ -337,6 +408,14 @@ fn decode_field(bytes: &[u8]) -> Result<&'static str, DecodeError> {
         "layer" => Ok("layer"),
         "processId" => Ok("processId"),
         "tcp" => Ok("tcp"),
+        "udp" => Ok("udp"),
+        "ipv4" => Ok("ipv4"),
+        "ipv6" => Ok("ipv6"),
+        "localAddr" => Ok("localAddr"),
+        "remoteAddr" => Ok("remoteAddr"),
+        "localPort" => Ok("localPort"),
+        "remotePort" => Ok("remotePort"),
+        "outbound" => Ok("outbound"),
         "inbound" => Ok("inbound"),
         "packet" => Ok("packet"),
         _ => Err(DecodeError::UnsupportedField(field.to_string())),

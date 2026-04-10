@@ -3,12 +3,17 @@ use std::process::ExitCode;
 use clap::{Parser, Subcommand};
 
 pub mod cmd {
+    pub mod common;
     pub mod flowtrack;
     pub mod netdump;
     pub mod netfilter;
     pub mod reflectctl;
     pub mod socketdump;
 }
+pub mod error;
+pub mod fixtures;
+pub mod output;
+pub mod runtime;
 
 #[derive(Debug, Parser)]
 #[command(name = "wd-cli", about = "WinDivert phase-one tooling surface")]

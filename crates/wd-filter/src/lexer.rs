@@ -1,3 +1,5 @@
+use std::net::Ipv4Addr;
+
 use thiserror::Error;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -111,14 +113,34 @@ pub fn lex(input: &str) -> Result<Vec<Token>, LexError> {
                     while i < bytes.len() && (bytes[i] as char).is_ascii_digit() {
                         i += 1;
                     }
-                    let value = input[start..i].parse::<u64>().map_err(|_| LexError {
-                        pos: start,
-                        message: "number literal out of range".to_string(),
-                    })?;
-                    tokens.push(Token {
-                        kind: TokenKind::Number(value),
-                        pos: start,
-                    });
+                    if i < bytes.len() && bytes[i] as char == '.' {
+                        while i < bytes.len() {
+                            let c = bytes[i] as char;
+                            if c.is_ascii_digit() || c == '.' || c == '/' {
+                                i += 1;
+                            } else {
+                                break;
+                            }
+                        }
+                        let raw = &input[start..i];
+                        parse_ipv4_literal_or_cidr(raw).map_err(|message| LexError {
+                            pos: start,
+                            message,
+                        })?;
+                        tokens.push(Token {
+                            kind: TokenKind::Ident(raw.to_string()),
+                            pos: start,
+                        });
+                    } else {
+                        let value = input[start..i].parse::<u64>().map_err(|_| LexError {
+                            pos: start,
+                            message: "number literal out of range".to_string(),
+                        })?;
+                        tokens.push(Token {
+                            kind: TokenKind::Number(value),
+                            pos: start,
+                        });
+                    }
                 }
             }
             _ if ch.is_ascii_alphabetic() || ch == '_' => {
@@ -152,4 +174,22 @@ pub fn lex(input: &str) -> Result<Vec<Token>, LexError> {
     }
 
     Ok(tokens)
+}
+
+fn parse_ipv4_literal_or_cidr(raw: &str) -> Result<(), String> {
+    if let Some((addr, prefix)) = raw.split_once('/') {
+        addr.parse::<Ipv4Addr>()
+            .map_err(|_| "invalid ipv4 literal".to_string())?;
+        let prefix = prefix
+            .parse::<u8>()
+            .map_err(|_| "invalid ipv4 cidr prefix".to_string())?;
+        if prefix > 32 {
+            return Err("invalid ipv4 cidr prefix".to_string());
+        }
+        return Ok(());
+    }
+
+    raw.parse::<Ipv4Addr>()
+        .map_err(|_| "invalid ipv4 literal".to_string())?;
+    Ok(())
 }

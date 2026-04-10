@@ -13,6 +13,91 @@ fn compiles_boolean_logic_and_packet_access() {
 }
 
 #[test]
+fn compiles_packet16_access_and_roundtrips_shared_codec() {
+    let ir = compile("tcp and packet16[10] == 0xaabb").expect("compile should pass");
+
+    assert!(ir.required_layers.contains(LayerMask::NETWORK));
+    assert!(ir.needs_payload);
+
+    let encoded = encode_ir(&ir);
+    let decoded = decode_ir(&encoded).expect("decode should pass");
+    assert_eq!(decoded, ir);
+}
+
+#[test]
+fn bare_tcp_symbol_does_not_pin_filter_to_network_only() {
+    let ir = compile("tcp").expect("compile should pass");
+
+    assert_eq!(ir.required_layers, LayerMask::empty());
+    assert!(!ir.needs_payload);
+    assert_eq!(ir.referenced_fields, vec!["tcp"]);
+}
+
+#[test]
+fn bare_udp_symbol_does_not_pin_filter_to_network_only() {
+    let ir = compile("udp").expect("compile should pass");
+
+    assert_eq!(ir.required_layers, LayerMask::empty());
+    assert!(!ir.needs_payload);
+    assert_eq!(ir.referenced_fields, vec!["udp"]);
+}
+
+#[test]
+fn bare_outbound_symbol_pins_filter_to_network_forward() {
+    let ir = compile("outbound").expect("compile should pass");
+
+    assert_eq!(ir.required_layers, LayerMask::NETWORK_FORWARD);
+    assert!(!ir.needs_payload);
+    assert_eq!(ir.referenced_fields, vec!["outbound"]);
+}
+
+#[test]
+fn transport_port_fields_require_network_layers() {
+    let ir = compile("localPort == 443 and remotePort == 12345").expect("compile should pass");
+
+    assert!(ir.required_layers.contains(LayerMask::NETWORK));
+    assert!(ir.required_layers.contains(LayerMask::NETWORK_FORWARD));
+    assert!(!ir.needs_payload);
+    assert!(ir.referenced_fields.contains(&"localPort"));
+    assert!(ir.referenced_fields.contains(&"remotePort"));
+}
+
+#[test]
+fn ip_version_symbols_require_network_layers() {
+    let ir = compile("ipv4 or ipv6").expect("compile should pass");
+
+    assert!(ir.required_layers.contains(LayerMask::NETWORK));
+    assert!(ir.required_layers.contains(LayerMask::NETWORK_FORWARD));
+    assert!(!ir.needs_payload);
+    assert!(ir.referenced_fields.contains(&"ipv4"));
+    assert!(ir.referenced_fields.contains(&"ipv6"));
+}
+
+#[test]
+fn ipv4_address_fields_require_network_layers() {
+    let ir = compile("localAddr == 2.2.2.2 and remoteAddr == 1.1.1.1")
+        .expect("compile should pass");
+
+    assert!(ir.required_layers.contains(LayerMask::NETWORK));
+    assert!(ir.required_layers.contains(LayerMask::NETWORK_FORWARD));
+    assert!(!ir.needs_payload);
+    assert!(ir.referenced_fields.contains(&"localAddr"));
+    assert!(ir.referenced_fields.contains(&"remoteAddr"));
+}
+
+#[test]
+fn ipv4_cidr_address_fields_require_network_layers() {
+    let ir = compile("localAddr == 2.2.2.0/24 and remoteAddr == 1.1.1.0/24")
+        .expect("compile should pass");
+
+    assert!(ir.required_layers.contains(LayerMask::NETWORK));
+    assert!(ir.required_layers.contains(LayerMask::NETWORK_FORWARD));
+    assert!(!ir.needs_payload);
+    assert!(ir.referenced_fields.contains(&"localAddr"));
+    assert!(ir.referenced_fields.contains(&"remoteAddr"));
+}
+
+#[test]
 fn compiles_symbolic_fields_without_payload() {
     let ir = compile("event == OPEN and layer == NETWORK").expect("compile should pass");
 

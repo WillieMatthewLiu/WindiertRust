@@ -1,4 +1,8 @@
-use wd_proto::{Layer, OpenResponse, ProtocolVersion};
+use wd_proto::{
+    FlowEventKind, Layer, OpenResponse, ProtocolVersion, SocketEventKind,
+    encode_flow_event_payload, encode_network_event_payload, encode_runtime_event,
+    encode_socket_event_payload,
+};
 use wd_user::{ChecksumUpdate, DynamicHandle, HandleConfig, RecvEvent};
 
 #[test]
@@ -67,6 +71,41 @@ fn repair_checksums_recomputes_ipv4_checksum_bytes() {
 #[test]
 fn decode_rejects_too_short_frame() {
     assert!(RecvEvent::decode(&[0u8; 8]).is_err());
+}
+
+#[test]
+fn decode_socket_event_from_runtime_frame() {
+    let payload = encode_socket_event_payload(SocketEventKind::Connect, 42);
+    let raw = encode_runtime_event(Layer::Socket, &payload);
+
+    let event = RecvEvent::decode(&raw).expect("socket runtime frame should decode");
+    let socket = event.socket().expect("socket event should be present");
+    assert_eq!(socket.kind(), SocketEventKind::Connect);
+    assert_eq!(socket.process_id(), 42);
+}
+
+#[test]
+fn decode_flow_event_from_runtime_frame() {
+    let payload = encode_flow_event_payload(FlowEventKind::Established, 9001, 7);
+    let raw = encode_runtime_event(Layer::Flow, &payload);
+
+    let event = RecvEvent::decode(&raw).expect("flow runtime frame should decode");
+    let flow = event.flow().expect("flow event should be present");
+    assert_eq!(flow.kind(), FlowEventKind::Established);
+    assert_eq!(flow.flow_id(), 9001);
+    assert_eq!(flow.process_id(), 7);
+}
+
+#[test]
+fn decode_network_runtime_event_exposes_reinjection_token() {
+    let packet = wd_user::test_support::network_frame_bytes();
+    let payload = encode_network_event_payload(55, &packet);
+    let raw = encode_runtime_event(Layer::Network, &payload);
+
+    let event = RecvEvent::decode(&raw).expect("network runtime frame should decode");
+    let packet = event.packet().expect("network packet should be present");
+    assert_eq!(packet.reinjection_token(), Some(55));
+    assert_eq!(packet.bytes(), wd_user::test_support::network_frame_bytes().as_slice());
 }
 
 #[test]
