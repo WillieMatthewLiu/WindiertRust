@@ -6,3 +6,6 @@ version.workspace = true
 
 [dependencies]
 clap.workspace = true
+wd-kmdf = { path = "../../driver/wd-kmdf" }
+wd-proto = { path = "../wd-proto" }
+wd-user = { path = "../wd-user" }

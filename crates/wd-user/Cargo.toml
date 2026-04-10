@@ -5,5 +5,8 @@ license.workspace = true
 version.workspace = true
 
 [dependencies]
+thiserror.workspace = true
+wd-driver-shared = { path = "../wd-driver-shared" }
 wd-filter = { path = "../wd-filter" }
 wd-proto = { path = "../wd-proto" }
+windows-sys.workspace = true

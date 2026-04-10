@@ -13,6 +13,7 @@ pub(crate) enum Expr {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) enum PacketWidth {
     Byte,
+    Word,
     Dword,
 }
 
@@ -115,6 +116,7 @@ impl<'a> Parser<'a> {
             let value = self.expect_number("expected packet value")?;
             let width = match field.to_ascii_lowercase().as_str() {
                 "packet" => PacketWidth::Byte,
+                "packet16" => PacketWidth::Word,
                 "packet32" => PacketWidth::Dword,
                 _ => {
                     return Err(ParseError {

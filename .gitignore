@@ -1,2 +1,4 @@
 .worktrees/
 target/
+driver/glue/out/
+driver/glue/kmdf-skeleton/build/

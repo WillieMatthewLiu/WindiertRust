@@ -4,6 +4,11 @@ edition.workspace = true
 license.workspace = true
 version.workspace = true
 
+[lib]
+crate-type = ["rlib", "staticlib"]
+
 [dependencies]
+wd-driver-shared = { path = "../../crates/wd-driver-shared" }
 wd-filter = { path = "../../crates/wd-filter" }
+wd-kmdf-core = { path = "../wd-kmdf-core" }
 wd-proto = { path = "../../crates/wd-proto" }

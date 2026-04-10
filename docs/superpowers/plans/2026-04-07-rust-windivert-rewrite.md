@@ -673,6 +673,8 @@ Expected: PASS
 
 ### Task 6: Wire CLI Tooling and Windows Host Validation Scripts
 
+**Status (2026-04-09):** Completed as runtime-first CLI flow. The five `wd-cli` subcommands now probe/open the real device path when available, emit stable machine-checkable text/JSON diagnostics, and the Windows host scripts assert both success-path and `device_unavailable` behavior instead of only checking exit codes.
+
 **Files:**
 - Create: `crates/wd-cli/src/lib.rs`
 - Create: `crates/wd-cli/src/main.rs`

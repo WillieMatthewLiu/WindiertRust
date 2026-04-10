@@ -194,6 +194,9 @@ name = "wd-cli"
 version = "0.1.0"
 dependencies = [
  "clap",
+ "wd-kmdf",
+ "wd-proto",
+ "wd-user",
 ]
 
 [[package]]
@@ -212,9 +215,15 @@ dependencies = [
 name = "wd-kmdf"
 version = "0.1.0"
 dependencies = [
+ "wd-driver-shared",
  "wd-filter",
+ "wd-kmdf-core",
  "wd-proto",
 ]
+
+[[package]]
+name = "wd-kmdf-core"
+version = "0.1.0"
 
 [[package]]
 name = "wd-proto"
@@ -228,8 +237,11 @@ dependencies = [
 name = "wd-user"
 version = "0.1.0"
 dependencies = [
+ "thiserror",
+ "wd-driver-shared",
  "wd-filter",
  "wd-proto",
+ "windows-sys",
 ]
 
 [[package]]
