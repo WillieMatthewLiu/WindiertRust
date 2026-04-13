@@ -1,0 +1,10 @@
+[package]
+name = "demo-dns-redirect"
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dependencies]
+wd-proto = { path = "../wd-proto" }
+wd-user = { path = "../wd-user" }
+wd-kmdf = { path = "../../driver/wd-kmdf" }

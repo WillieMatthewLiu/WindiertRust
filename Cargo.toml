@@ -5,6 +5,8 @@ members = [
     "crates/wd-filter",
     "crates/wd-user",
     "crates/wd-cli",
+    "crates/demo-dns-redirect",
+    "crates/demo-conn-monitor",
     "driver/wd-kmdf-core",
     "driver/wd-kmdf",
 ]
